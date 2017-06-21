@@ -8,6 +8,8 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
+import com.example.snhoward.flicks.models.Config;
 import com.example.snhoward.flicks.models.Movie;
 
 import java.util.ArrayList;
@@ -20,17 +22,29 @@ public class MovieAdapter extends  RecyclerView.Adapter<MovieAdapter.ViewHolder>
 
     // list of movies
     ArrayList<Movie> movies;
+    // config needed for image urls
+    Config config;
+    // context for rendering
+    Context context;
 
     // initialize with list
     public MovieAdapter(ArrayList<Movie> movies) {
         this.movies = movies;
     }
 
+    public Config getConfig() {
+        return config;
+    }
+
+    public void setConfig(Config config) {
+        this.config = config;
+    }
+
     // creates and inflates a new view
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         // get the context and create the inflater
-        Context context = parent.getContext();
+        context = parent.getContext();
         LayoutInflater inflater = LayoutInflater.from(context);
         // create the view using the item_movie layout
         View movieView = inflater.inflate(R.layout.item_movie, parent, false);
@@ -47,7 +61,15 @@ public class MovieAdapter extends  RecyclerView.Adapter<MovieAdapter.ViewHolder>
         holder.tvTitle.setText(movie.getTitle());
         holder.tvOverview.setText(movie.getOverview());
 
-        // TODO - set image using Glide
+        // build url for poster image
+        String imageUrl = config.getImageUrl(config.getPosterSize(),movie.getPosterPath());
+
+        // load image using glide
+        Glide.with(context)
+                .load(imageUrl)
+                .placeholder(R.drawable.flicks_movie_placeholder)
+                .error(R.drawable.flicks_movie_placeholder)
+                .into(holder.ivPosterImage);
     }
 
     // returns the total number of items in a list

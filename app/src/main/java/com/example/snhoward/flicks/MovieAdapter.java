@@ -13,7 +13,6 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.example.snhoward.flicks.models.Config;
 import com.example.snhoward.flicks.models.Movie;
-import com.example.snhoward.flicks.models.MovieDetailsActivity;
 
 import org.parceler.Parcels;
 

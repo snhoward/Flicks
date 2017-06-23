@@ -18,7 +18,6 @@ public class MovieTrailerActivity extends YouTubeBaseActivity {
 
         Intent intent = getIntent();
 
-        // temporary test video id -- TODO replace with movie trailer video id
         final String videoId = intent.getStringExtra("key");
 
         // resolve the player view from the layout

@@ -1,10 +1,10 @@
 package com.example.snhoward.flicks;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
-import android.view.View;
 import android.widget.ImageView;
 import android.widget.RatingBar;
 import android.widget.TextView;
@@ -23,6 +23,7 @@ import org.parceler.Parcels;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 import cz.msebera.android.httpclient.Header;
 
 import static com.example.snhoward.flicks.MovieListActivity.API_BASE_URL;
@@ -42,6 +43,9 @@ public class MovieDetailsActivity extends AppCompatActivity {
     @BindView(R.id.tvOverview) TextView tvOverview;
     @BindView(R.id.ivBackdrop) ImageView ivBackdrop;
     @BindView(R.id.rbRating) RatingBar rbRating;
+    @BindView(R.id.tvReleaseDate) TextView tvReleaseDate;
+    @BindView(R.id.ivLogo) ImageView ivLogo;
+    @BindView(R.id.ivPlay) ImageView ivPlay;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,24 +60,24 @@ public class MovieDetailsActivity extends AppCompatActivity {
         // set the title and overview
         tvTitle.setText(movie.getTitle());
         tvOverview.setText(movie.getOverview());
+        tvReleaseDate.setText(" Released " + movie.getReleaseDate());
 
         Glide.with(ivBackdrop.getContext())
                 .load(movie.getBackdropURL())
                 .into(ivBackdrop);
 
-        ivBackdrop.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Toast.makeText(MovieDetailsActivity.this,
-                        "Playing trailer...",
-                        Toast.LENGTH_LONG).show();
-                getVideoKey();
-            }
-        });
-
         // vote average is 0..10, convert to 0..5 by dividing by 2
         float voteAverage = movie.getVoteAverage().floatValue();
         rbRating.setRating(voteAverage = voteAverage > 0 ? voteAverage / 2.0f : voteAverage);
+    }
+
+    @OnClick(R.id.ivBackdrop)
+    public void displayToast(ImageView ivBackdrop) {
+        ivLogo.setColorFilter(Color.WHITE);
+        Toast.makeText(MovieDetailsActivity.this,
+                "Playing trailer...",
+                Toast.LENGTH_LONG).show();
+        getVideoKey();
     }
 
     // get the list of currently playng movies from the API
